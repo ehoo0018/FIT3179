@@ -1,0 +1,83 @@
+body *{
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 300;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.center-align {
+    text-align: center;
+}
+
+
+h1 {
+    text-align: center;
+    font-weight: 600;
+    font-size: 300%;
+}
+
+h2 {
+    text-align: left;
+    font-weight: 500;
+    font-size: 200%;
+}
+
+h3 {
+    text-align: left;
+    font-weight: 500;
+    font-size: 175%;
+    font-style: italic;
+}
+.subtitle {
+    text-align: center;
+    font-weight: 500;
+    font-size: 120%;
+}
+
+.main-title {
+    font-size: 200%;
+}
+
+body {
+    background-color: lightgray;
+}
+
+.page {
+    width: 1200px;
+    background-color: white;
+    margin: auto;
+    padding: 50px;
+    padding-top: 35px;
+}
+
+.vis-container {
+    width: 100%;
+}
+
+.description h2,
+h1 {
+    margin-top: 0px;
+}
+
+.description-right {
+    padding-left: 20px;
+    
+}
+
+.description-left {
+    padding-right: 20px;
+}
+
+.pure-g {
+    margin-bottom: 40px;
+}
+
+.pure-u-1-1 {
+    text-align: center;
+}
+
+.small-font {
+    font-size: 14px;
+}

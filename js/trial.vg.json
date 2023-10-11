@@ -1,0 +1,98 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "name": "data",
+        "url": "https://raw.githubusercontent.com/ehoo0018/Data-Visualisation-2/main/data/michellin.csv"
+    },
+    "vconcat": [
+        {
+            "title": "Restaurants Per Cuisine",
+            "layer": [
+                {
+                    "mark": {"type": "bar", "fill": "#4185bd", "stroke": "black", "cursor": "pointer"},
+                    "params": [
+                        {
+                            "name": "click",
+                            "select": {"type": "point", "encodings": ["x"]}
+                        },
+                        {
+                            "name": "highlight",
+                            "select": {"type": "point", "on": "mouseover"}
+                        },
+                        {
+                            "name": "brush",
+                            "select": {"type": "interval", "encodings": ["x"]}
+                        }
+                    ],
+                    "encoding": {
+                        "x": {
+                            "field": "Cuisine_Fixed",
+                            "type": "nominal",
+                            "title": "Cuisines"
+                        },
+                        "y": {
+                            "aggregate": "count",
+                            "type": "quantitative",
+                            "title": "Number of Restaurants",
+                            "scale": {"type": "sqrt"}
+                        },
+                        "fillOpacity": {
+                            "condition": {"param": "click", "value": 1},
+                            "value": 0.3
+                        },
+                        "strokeWidth": {
+                            "condition": [
+                                {"param": "click", "empty": false, "value": 2},
+                                {"param": "highlight", "empty": false, "value": 1}
+                            ],
+                            "value": 0
+                        },
+                        "tooltip": [
+                            {"field": "Cuisine_Fixed", "type": "nominal", "title": "Cuisine"},
+                            {"aggregate": "count", "type": "quantitative", "title": "Number of Restaurants"}
+                        ]
+                    }
+                },
+                {
+                    "transform": [
+                        {
+                            "aggregate": [
+                                {
+                                    "op": "count",
+                                    "field": "Cuisine_Fixed",
+                                    "as": "count_cuisine"
+                                }
+                            ],
+                            "groupby": ["Cuisine_Fixed"]
+                        }
+                    ],
+                    "mark": "rule",
+                    "encoding": {
+                        "y": {
+                            "aggregate": "mean", "field": "count_cuisine", "type": "quantitative"
+                        },
+                        "color": {"value": "red"},
+                        "size": {"value": 3}
+                    }
+                }
+            ]            
+        },
+        {
+            "mark": {"type": "arc", "tooltip": true, "innerRadius": 50},
+            "transform": [
+            {"filter": {"param": "click"}},
+                {"aggregate": [{
+                "op": "count",
+                "as": "price_count"
+                }],
+                "groupby": ["Price", "Rating"]
+                }
+            ],
+            "encoding": {
+                "column": {"field": "Rating", "title": "Michelin Stars"},
+                "theta": {"field": "price_count", "type": "quantitative", "stack": "normalize"},
+                "color": {"field": "Price", "type": "nominal"}
+            }    
+        }
+    ]
+}

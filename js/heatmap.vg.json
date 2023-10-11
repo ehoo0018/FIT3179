@@ -1,0 +1,42 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 600,
+    "height": 200,
+    "data": {
+        "url": "https://raw.githubusercontent.com/ehoo0018/Data-Visualisation-2/main/data/michellin.csv"
+    },
+    "transform": [
+        {
+            "aggregate": [{"op": "count", "as": "num_rest"}],
+            "groupby": ["Region", "Rating"]
+        }
+    ],
+    "encoding": {
+        "x": {"field": "Region", "type": "nominal"},
+        "y": {"field": "Rating", "type": "ordinal"}
+    },
+    "layer": [
+        {
+            "mark": "rect",
+            "encoding": {
+                "color": {
+                    "field": "num_rest",
+                    "type": "quantitative",
+                    "title": "Count of All Restaurants",
+                    "legend": {"direction": "vertical", "gradientLength": 120},
+                    "scale": {"type": "log"}
+                }
+            }
+        },
+        {
+            "mark": "text",
+            "encoding": {
+                "text": {"field": "num_rest", "type": "quantitative"},
+                "color": {
+                    "condition": {"test": "datum['num_rest'] < 10", "value": "black"},
+                    "value": "white"
+                }
+            }
+        }
+    ]
+}

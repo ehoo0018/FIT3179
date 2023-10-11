@@ -1,0 +1,21 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "url": "https://raw.githubusercontent.com/ehoo0018/Data-Visualisation-2/main/data/michellin.csv"
+    },
+    "mark": {"type": "arc", "tooltip": true, "innerRadius": 50},
+    "transform": [
+        {"aggregate": [{
+            "op": "count",
+            "as": "Percentage of Restaurants"
+        }],
+        "groupby": ["Price", "Rating", "Year"]
+    }
+    ],
+    "encoding": {
+        "column": {"field": "Year", "title": "Year"},
+        "row": {"field": "Rating", "title": "Michelin Stars"},
+        "theta": {"field": "Percentage of Restaurants", "type": "quantitative", "stack": "normalize"},
+        "color": {"field": "Price", "type": "nominal", "title": "Price Rating"}
+    }
+}

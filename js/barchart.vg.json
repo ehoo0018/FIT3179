@@ -1,0 +1,128 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "name": "data",
+        "url": "https://raw.githubusercontent.com/ehoo0018/Data-Visualisation-2/main/data/michellin.csv"
+    },
+    "vconcat": [
+        {
+            "title": "Restaurants Per Cuisine",
+            "layer": [
+                {
+                    "mark": {"type": "bar", "fill": "#4185bd", "stroke": "black", "cursor": "pointer"},
+                    "params": [
+                        {
+                            "name": "click",
+                            "select": {"type": "point", "encodings": ["y"]}
+                        },
+                        {
+                            "name": "highlight",
+                            "select": {"type": "point", "on": "mouseover"}
+                        }
+                    ],
+                    "encoding": {
+                        "y": {
+                            "field": "Cuisine_Fixed",
+                            "type": "nominal",
+                            "title": "Cuisines"
+                        },
+                        "x": {
+                            "aggregate": "count",
+                            "type": "quantitative",
+                            "title": "Number of Restaurants",
+                            "scale": {"type": "sqrt"}
+                        },
+                        "fillOpacity": {
+                            "condition": {"param": "click", "value": 1},
+                            "value": 0.3
+                        },
+                        "strokeWidth": {
+                            "condition": [
+                                {"param": "click", "empty": false, "value": 2},
+                                {"param": "highlight", "empty": false, "value": 1}
+                            ],
+                            "value": 0
+                        },
+                        "tooltip": [
+                            {"field": "Cuisine_Fixed", "type": "nominal", "title": "Cuisine"},
+                            {"aggregate": "count", "type": "quantitative", "title": "Number of Restaurants"}
+                        ]
+                    }
+                },
+                {
+                    "transform": [
+                        {
+                            "aggregate": [
+                                {
+                                    "op": "count",
+                                    "field": "Cuisine_Fixed",
+                                    "as": "count_cuisine"
+                                }
+                            ],
+                            "groupby": ["Cuisine_Fixed"]
+                        }
+                    ],
+                    "mark": "rule",
+                    "encoding": {
+                        "x": {
+                            "aggregate": "mean", "field": "count_cuisine", "type": "quantitative"
+                        },
+                        "color": {"value": "red"},
+                        "size": {"value": 3}
+                    }
+                }
+            ]            
+        },
+        {
+            "vconcat": [
+                {   
+                    "mark": {"type": "arc", "innerRadius": 50, "stroke": "#fff", "tooltip": true},
+                    "transform": [
+                        {"filter": {"param": "click"}}
+                    ],
+                    "encoding": {
+                        "column": {"field": "Year"},
+                        "theta": {"aggregate": "count", "field": "Price", "type": "quantitative", "stack": true},
+                        "color": {"field": "Price", "type": "nominal"}
+                    }
+                },
+                {
+                    "transform": [
+                        {
+                            "aggregate": [{"op": "count", "as": "num_rest"}],
+                            "groupby": ["Region", "Rating"]
+                        }
+                    ],
+                    "encoding": {
+                        "y": {"field": "Region", "type": "nominal"},
+                        "x": {"field": "Rating", "type": "ordinal"}
+                    },
+                    "layer": [
+                        {
+                            "mark": "rect",
+                            "encoding": {
+                                "color": {
+                                    "field": "num_rest",
+                                    "type": "quantitative",
+                                    "title": "Count of All Restaurants",
+                                    "legend": {"direction": "vertical", "gradientLength": 120},
+                                    "scale": {"type": "log"}
+                                }
+                            }
+                        },
+                        {
+                            "mark": "text",
+                            "encoding": {
+                                "text": {"field": "num_rest", "type": "quantitative"},
+                                "color": {
+                                    "condition": {"test": "datum['num_rest'] < 10", "value": "black"},
+                                    "value": "white"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
