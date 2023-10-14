@@ -90,7 +90,8 @@
                     {"field": "Latitude", "type": "quantitative", "title": "Latitude: "},
                     {"field": "Rating", "type": "ordinal", "title": "Michelin Stars: "},
                     {"field": "Price", "type": "ordinal", "title": "Price: "},
-                    {"field": "Cuisine_Fixed", "type": "nominal", "title": "Cuisine: "}
+                    {"field": "Cuisine_Fixed", "type": "nominal", "title": "Cuisine: "},
+                    {"field": "Region", "type": "nominal", "title": "Region: "}
                 ]
             }
         }

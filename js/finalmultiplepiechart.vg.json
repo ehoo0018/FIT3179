@@ -1,0 +1,19 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "url": "https://raw.githubusercontent.com/ehoo0018/Data-Visualisation-2/main/data/michelin_my_maps%20-%20modified.csv"
+    },
+    "transform": [
+        {"filter": "datum.Price_NumRating != ''"}
+    ],
+    "mark": {"type": "arc", "innerRadius": 40, "stroke": "#fff", "tooltip": true},
+    "encoding": {
+        "facet": {
+            "field": "Award",
+            "type": "nominal",
+            "columns": 5
+        },
+        "theta": {"aggregate": "count", "type": "quantitative", "stack": "normalize", "title": "% of Restaurants"},
+        "color": {"field": "Price_NumRating", "type": "nominal", "title": "Price Rating"}
+    }
+}

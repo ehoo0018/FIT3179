@@ -1,0 +1,132 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "url": "https://raw.githubusercontent.com/ehoo0018/Data-Visualisation-2/main/data/michelin_my_maps%20-%20modified.csv"
+    },
+    "vconcat": [
+        {
+            "layer": [
+                {
+                    "mark": {"type": "bar", "stroke": "black", "cursor": "pointer"},
+                    "params": [
+                        {
+                            "name": "highlight",
+                            "select": {"type": "point", "on": "mouseover"}
+                        },
+                        {
+                            "name": "brush",
+                            "select": {"type": "interval", "encodings": ["x"]}
+                        },
+                        {
+                            "name": "click",
+                            "select": {"type": "point", "encodings": ["x"]}
+                        }
+                    ],
+                    "transform": [
+                        {"filter": "datum.Country != 'N/A'"}
+                    ],
+                    "encoding": {
+                        "x": {
+                            "field": "Country",
+                            "type": "nominal"
+                        },
+                        "y": {
+                            "aggregate": "count",
+                            "field": "Country",
+                            "type": "quantitative",
+                            "scale": {"type": "sqrt"},
+                            "title": "Count of Restaurants"
+                        },
+                        "color": {
+                            "aggregate": "count",
+                            "field": "Country",
+                            "type": "quantitative",
+                            "scale": {"type": "sqrt"},
+                            "title": "Count of Restaurants"
+                        },
+                        "strokeWidth": {
+                            "condition": [
+                                {"param": "highlight", "empty": false, "value": 1}
+                            ],
+                            "value": 0
+                        },
+                        "fillOpacity": {
+                            "condition": {"param": "brush", "value": 1},
+                            "value": 0.3
+                        },
+                        "tooltip": [
+                            {"aggregate": "count", "type": "quantitative", "title": "Number of Restaurants: "}
+                        ]
+                    }
+                },
+                {
+                    "transform": [
+                        {
+                            "aggregate": [
+                                {
+                                    "op": "count",
+                                    "as": "country_count"
+                                }
+                            ],
+                            "groupby": ["Country"]
+                        },
+                        {
+                            "filter": {"param": "brush"}
+                        }
+                    ],
+                    "mark": "rule",
+                    "encoding": {
+                        "y": {
+                            "aggregate": "mean", "field": "country_count", "type": "quantitative"
+                        },
+                        "color": {"value": "red"},
+                        "size": {"value": 3},
+                        "text": {"aggregate": "mean", "field": "count_cuisine", "type": "quantitative"}
+                    }
+                }
+            ]
+        },
+        {   
+            "width": 780,
+            "mark": {"type": "bar", "stroke": "black", "cursor": "pointer"},
+            "params": [
+                {
+                    "name": "highlight",
+                    "select": {"type": "point", "on": "mouseover"}
+                }
+            ],
+            "transform": [
+                {"filter": {"param": "click"}}
+            ],
+            "encoding": {
+                "y": {
+                    "field": "Award",
+                    "type": "nominal"
+                },
+                "x": {
+                    "aggregate": "count",
+                    "field": "Country",
+                    "type": "quantitative",
+                    "title": "Count of Restaurants",
+                    "scale": {"type": "sqrt"}
+                },
+                "color": {
+                    "aggregate": "count",
+                    "field": "Country",
+                    "type": "quantitative",
+                    "scale": {"type": "sqrt"},
+                    "title": "Count of Restaurants"
+                },
+                "strokeWidth": {
+                    "condition": [
+                        {"param": "highlight", "empty": false, "value": 1}
+                    ],
+                    "value": 0
+                },
+                "tooltip": [
+                    {"aggregate": "count", "type": "quantitative", "title": "Number of Restaurants: "}
+                ]
+            }
+        }
+    ]
+}

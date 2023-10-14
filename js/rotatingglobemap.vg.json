@@ -1,0 +1,116 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 800,
+    "height": 450,
+    "title": "Zoomed View",
+    "projection": {
+        "type": "orthographic",
+        "rotate": {"expr": "[rotate_horizontal, rotate_vertical, 0]"},
+        "scale": {"expr": "zoom_level"}
+    },
+    "params": [
+        {
+            "name": "rotate_horizontal",
+            "value": 0,
+            "bind": {"input": "range", "min": -180, "max": 180, "step": 0.0001, "name": "Rotate Horizontal: "}
+        },
+        {
+            "name": "rotate_vertical",
+            "value": -50,
+            "bind": {"input": "range", "min": -90, "max": 90, "step": 0.0001, "name": "Rotate Vertical: "}
+        },
+        {
+            "name": "zoom_level",
+            "value": 300,
+            "bind": {
+            "input": "range",
+            "min": 200,
+            "max": 3500,
+            "step": 100,
+            "name": "Zoom: "
+            }
+        },
+        {
+            "name": "award_selection",
+            "bind": {
+                "input": "select",
+                "options": [
+                    null,
+                    "1 Star MICHELIN",
+                    "2 Stars MICHELIN",
+                    "3 Stars MICHELIN",
+                    "Bib Gourmand",
+                    "MICHELIN Green Star"
+                ],
+                "labels": [
+                    "Show All",
+                    "1 Star MICHELIN",
+                    "2 Stars MICHELIN",
+                    "3 Stars MICHELIN",
+                    "Bib Gourmand",
+                    "MICHELIN Green Star"
+                ],
+                "name": "Award: "
+            }
+        },
+        {
+            "name": "price_below",
+            "value": 4,
+            "bind": {
+                "input": "range",
+                "min": 1,
+                "max": 4,
+                "step": 1,
+                "name": "Price Rating Below: "
+            }
+        }
+    ],
+    "layer": [
+        {
+            "data": {"sphere": true},
+            "mark": {"type": "geoshape", "fill": "aliceblue"}
+        },
+        {
+            "data": {
+              "graticule": true
+            },
+            "mark": {
+              "type": "geoshape",
+              "stroke": "black",
+              "strokeWidth": 0.5
+            }
+        },
+        {
+            "data": {
+                "url": "https://raw.githubusercontent.com/ehoo0018/FIT3179/main/js/ne_110m.json",
+                "format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
+            },
+            "mark": {"type": "geoshape", "fill": "mintcream", "stroke": "black"}
+        },
+        {
+            "data": {
+                "url": "https://raw.githubusercontent.com/ehoo0018/Data-Visualisation-2/main/data/michelin_my_maps%20-%20modified.csv"
+            },
+            "transform": [
+                {"filter": "datum.Price_NumRating <= price_below"},
+                {"filter": "award_selection == null || datum.Award == award_selection"},
+                {
+                    "filter": "(rotate_horizontal * -1) - 90 < datum.Longitude && datum.Longitude < (rotate_horizontal * -1) + 90 && (rotate_vertical * -1) - 90 < datum.Latitude && datum.Latitude < (rotate_vertical * -1) + 90"
+                }
+            ],
+            "mark": {"type": "circle", "tooltip": {"content": "data"}, "size": 20, "stroke": "black", "strokeWidth": 1},
+            "encoding": {
+                "latitude": {"field": "Latitude", "type": "quantitative"},
+                "longitude": {"field": "Longitude", "type": "quantitative"},
+                "color": {"field": "Award", "type": "nominal"},
+                "tooltip": [
+                    {"field": "Name", "type": "nominal", "title": "Name: "},
+                    {"field": "City", "type": "nominal", "title": "City: "},
+                    {"field": "Country", "type": "nominal", "title": "Country: "},
+                    {"field": "Award", "type": "nominal", "title": "Award: "}
+                ]
+            }
+        }
+    ],
+    "config": {}
+}

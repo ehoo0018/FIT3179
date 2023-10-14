@@ -1,0 +1,11 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "url": "https://raw.githubusercontent.com/ehoo0018/Data-Visualisation-2/main/data/michelin_my_maps%20-%20modified.csv"
+    },
+    "mark": {"type": "point", "filled": true},
+    "encoding": {
+        "x": {"field": "Price_NumRating", "type": "ordinal", "axis": null},
+        "y": {"aggregate": "count", "type": "quantitative", "axis": null}
+    }
+}
